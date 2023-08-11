@@ -5,15 +5,15 @@ import { useState } from 'react'
 export const TicTacToe = () => {
 
     const [board, setBoard] = useState(Array(9).fill(null))
-    // const [board, setBoard] = useState(['X', 'X', 'X', 'O', 'O', 'O', 'X', 'X', 'X'])
+    const [playerXTurn, setPlayerXTurn] = useState(true)
 
     const handleClick = (id) => {
         const updatedBoard = board.map((item, i) => {
-            if (i === id) return 'X'
+            if (i === id) return playerXTurn ? 'X' : 'O'
             return item
         })
         setBoard(updatedBoard)
-        console.log(id)
+        setPlayerXTurn(prevState => !prevState)
     }
 
     return (
