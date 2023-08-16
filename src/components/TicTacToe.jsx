@@ -9,7 +9,8 @@ export const TicTacToe = () => {
 
     const handleClick = (id) => {
         const updatedBoard = board.map((item, i) => {
-            if (i === id) return playerXTurn ? 'X' : 'O'
+            if (i === id && !item) return playerXTurn ? 'X' : 'O'
+
             return item
         })
         setBoard(updatedBoard)
