@@ -33,12 +33,10 @@ export const TicTacToe = () => {
         if (waitingForNewRound) return
         if (playerXTurn) {
             setScores(prevState => {
-                console.log(prevState)
                 return ({ ...prevState, playerXScore: prevState.playerXScore++ })
             })
         } else {
             setScores(prevState => {
-                console.log(prevState)
                 return ({ ...prevState, playerOscore: prevState.playerOScore++ })
             })
         }
@@ -50,7 +48,6 @@ export const TicTacToe = () => {
             const [x, y, z] = item
             if (board[x] && board[x] === board[y] && board[y] === board[z]) {
                 updateScore()
-                // setWaitingForNewRound(true)
             }
         })
     }
