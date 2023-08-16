@@ -66,7 +66,7 @@ export const TicTacToe = () => {
 
     return (
         <div>
-            <ScoreBoard scores={scores} currentPlayer={playerXTurn} />
+            <ScoreBoard scores={scores} currentPlayer={playerXTurn} waitingForNewRound={waitingForNewRound} />
             <PlayBoard board={board} handleClick={handleClick} />
             <button onClick={resetBoard}>reset</button>
         </div>
