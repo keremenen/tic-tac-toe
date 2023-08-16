@@ -1,0 +1,51 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.scoreTabsWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.scoreTab {
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+}
+
+.scoreTab span {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.scoreTab span::after {
+    content: 'pts';
+    margin-left: 4px;
+}
+
+.xTurn {
+    transition: border-color 400ms ease-in-out;
+    border-color: rgb(175, 41, 41);
+}
+
+.oTurn {
+    transition: border-color 400ms ease-in-out;
+    border-color: rgb(27, 143, 66);
+}
+
+.infoMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    transition: all 300ms ease-in-out;
+    text-align: center;
+}
+
+.infoMessage span {
+    opacity: .7;
+    font-size: 12px;
+}

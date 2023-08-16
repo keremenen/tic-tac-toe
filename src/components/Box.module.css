@@ -1,0 +1,24 @@
+.box {
+    outline: none;
+    appearance: none;
+    border: none;
+    height: 100px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 4rem;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: border 50ms ease-in-out;
+}
+
+.box:hover {
+    border: 3px solid rgb(12, 95, 173)
+}
+
+.red {
+    color: rgb(175, 41, 41);
+}
+
+.green {
+    color: rgb(27, 143, 66);
+}

@@ -1,0 +1,16 @@
+.button {
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    outline: none;
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    transition: all 100ms ease-in-out;
+    color: white;
+}
+
+.button:hover {
+    font-weight: 700;
+    transform: scale(1.1);
+}
