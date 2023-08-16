@@ -25,6 +25,16 @@ export const TicTacToe = () => {
         playerOScore: 0
     })
 
+    const resetGame = () => {
+        setPlayerXTurn(true)
+        setBoard(Array(9).fill(null))
+        setScores({
+            playerXScore: 0,
+            playerOScore: 0
+        })
+        setWaitingForNewRound(false)
+    }
+
     const resetBoard = () => {
         setBoard(Array(9).fill(null))
         setWaitingForNewRound(false)
@@ -71,7 +81,7 @@ export const TicTacToe = () => {
             <PlayBoard board={board} handleClick={handleClick} />
             <div className={styles.buttonsWrapper}>
                 <Button onClick={resetBoard} background={'#ad7b1b'}>Reset board</Button>
-                <Button onClick={resetBoard} background={'#8b0000'}>End game</Button>
+                <Button onClick={resetGame} background={'#8b0000'}>End game</Button>
             </div>
         </div>
     )
