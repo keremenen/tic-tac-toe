@@ -18,17 +18,17 @@ export const TicTacToe = () => {
     const [board, setBoard] = useState(Array(9).fill(null))
     const [playerXTurn, setPlayerXTurn] = useState(true)
 
+    const resetBoard = () => {
+        setBoard(Array(9).fill(null))
+    }
+
     const checkIfWin = (board) => {
         WINNING_CONDITIONS.forEach((item, i) => {
             const [x, y, z] = item
-            // console.log(x, y, z)
-            // console.log(board)
-            // console.log(`${board[x]} ${board[y]} ${board[z]}`)
             if (board[x] && board[x] === board[y] && board[y] === board[z]) {
                 if (playerXTurn) {
                     return console.log(`Player X won`)
                 }
-
                 console.log(`Player O won`)
             }
         })
@@ -47,6 +47,7 @@ export const TicTacToe = () => {
     return (
         <div>
             <PlayBoard board={board} handleClick={handleClick} />
+            <button onClick={resetBoard}>reset</button>
         </div>
     )
 }
