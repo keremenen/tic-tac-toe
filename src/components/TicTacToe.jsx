@@ -1,4 +1,5 @@
 import PlayBoard from './PlayBoard'
+import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
 import { useState } from 'react'
 
@@ -17,24 +18,45 @@ export const TicTacToe = () => {
 
     const [board, setBoard] = useState(Array(9).fill(null))
     const [playerXTurn, setPlayerXTurn] = useState(true)
+    const [waitingForNewRound, setWaitingForNewRound] = useState(false)
+    const [scores, setScores] = useState({
+        playerXScore: 0,
+        playerOScore: 0
+    })
 
     const resetBoard = () => {
         setBoard(Array(9).fill(null))
+        setWaitingForNewRound(false)
+    }
+
+    const updateScore = () => {
+        if (waitingForNewRound) return
+        if (playerXTurn) {
+            setScores(prevState => {
+                console.log(prevState)
+                return ({ ...prevState, playerXScore: prevState.playerXScore++ })
+            })
+        } else {
+            setScores(prevState => {
+                console.log(prevState)
+                return ({ ...prevState, playerOscore: prevState.playerOScore++ })
+            })
+        }
+        setWaitingForNewRound(true)
     }
 
     const checkIfWin = (board) => {
         WINNING_CONDITIONS.forEach((item, i) => {
             const [x, y, z] = item
             if (board[x] && board[x] === board[y] && board[y] === board[z]) {
-                if (playerXTurn) {
-                    return console.log(`Player X won`)
-                }
-                console.log(`Player O won`)
+                updateScore()
+                // setWaitingForNewRound(true)
             }
         })
     }
 
     const handleClick = (id) => {
+        if (waitingForNewRound) return
         const updatedBoard = board.map((item, i) => {
             if (i === id && !item) return playerXTurn ? 'X' : 'O'
             return item
@@ -46,6 +68,7 @@ export const TicTacToe = () => {
 
     return (
         <div>
+            <ScoreBoard scores={scores} />
             <PlayBoard board={board} handleClick={handleClick} />
             <button onClick={resetBoard}>reset</button>
         </div>
