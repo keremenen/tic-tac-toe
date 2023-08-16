@@ -1,5 +1,5 @@
 .buttons-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 100px);
-    gap: 5px;
+    gap: 8px;
 }
