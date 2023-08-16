@@ -1,3 +1,4 @@
+import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
@@ -68,7 +69,10 @@ export const TicTacToe = () => {
         <div>
             <ScoreBoard scores={scores} currentPlayer={playerXTurn} waitingForNewRound={waitingForNewRound} />
             <PlayBoard board={board} handleClick={handleClick} />
-            <button onClick={resetBoard}>reset</button>
+            <div className={styles.buttonsWrapper}>
+                <Button onClick={resetBoard} background={'#ad7b1b'}>Reset board</Button>
+                <Button onClick={resetBoard} background={'#8b0000'}>End game</Button>
+            </div>
         </div>
     )
 }
