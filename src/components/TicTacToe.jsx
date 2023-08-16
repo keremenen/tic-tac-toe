@@ -54,6 +54,7 @@ export const TicTacToe = () => {
 
     const handleClick = (id) => {
         if (waitingForNewRound) return
+        if (board[id]) return
         const updatedBoard = board.map((item, i) => {
             if (i === id && !item) return playerXTurn ? 'X' : 'O'
             return item
@@ -65,7 +66,7 @@ export const TicTacToe = () => {
 
     return (
         <div>
-            <ScoreBoard scores={scores} />
+            <ScoreBoard scores={scores} currentPlayer={playerXTurn} />
             <PlayBoard board={board} handleClick={handleClick} />
             <button onClick={resetBoard}>reset</button>
         </div>

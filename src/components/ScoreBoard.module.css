@@ -1,0 +1,31 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.scoreTab {
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+}
+
+.scoreTab span {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.scoreTab span::after {
+    content: 'pts';
+    margin-left: 4px;
+}
+
+.xTurn {
+    transition: border-color 400ms ease-in-out;
+    border-color: rgb(175, 41, 41);
+}
+
+.oTurn {
+    transition: border-color 400ms ease-in-out;
+    border-color: rgb(27, 143, 66);
+}

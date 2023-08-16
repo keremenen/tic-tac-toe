@@ -1,10 +1,10 @@
-import React from 'react'
+import styles from './ScoreBoard.module.css'
 
-export const ScoreBoard = ({ scores: { playerXScore, playerOScore } }) => {
+export const ScoreBoard = ({ scores: { playerXScore, playerOScore }, currentPlayer }) => {
     return (
-        <div>
-            <div>Player X: {playerXScore}</div>
-            <div>Player O: {playerOScore}</div>
+        <div className={styles.wrapper}>
+            <div className={`${styles.scoreTab} ${currentPlayer && styles.xTurn}`}>Player X: <span>{playerXScore}</span></div>
+            <div className={`${styles.scoreTab} ${!currentPlayer && styles.oTurn} `}>Player O: <span>{playerOScore}</span></div>
         </div>
     )
 }
