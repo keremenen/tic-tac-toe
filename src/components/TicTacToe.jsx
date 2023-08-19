@@ -2,7 +2,7 @@ import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const WINNING_CONDITIONS = [
     [0, 1, 2],
@@ -14,12 +14,12 @@ const WINNING_CONDITIONS = [
     [0, 4, 8],
     [2, 4, 6]
 ]
-
 export const TicTacToe = () => {
 
     const [board, setBoard] = useState(Array(9).fill(null))
     const [playerXTurn, setPlayerXTurn] = useState(true)
     const [waitingForNewRound, setWaitingForNewRound] = useState(false)
+    const [draw, setDraw] = useState(false)
     const [scores, setScores] = useState({
         playerXScore: 0,
         playerOScore: 0
@@ -73,11 +73,23 @@ export const TicTacToe = () => {
         checkIfWin(updatedBoard)
         setBoard(updatedBoard)
         setPlayerXTurn(prevState => !prevState)
+        if (handleDraw(updatedBoard)) setDraw(true)
     }
+
+    const handleDraw = (board) => {
+        const boardHasNullElement = board.every(element => element !== null)
+        return boardHasNullElement
+    }
+
+    useEffect(() => {
+        console.log(board)
+        const element = board.every(element => element !== null)
+        if (element) console.log('jest')
+    }, [board])
 
     return (
         <div>
-            <ScoreBoard scores={scores} currentPlayer={playerXTurn} waitingForNewRound={waitingForNewRound} />
+            <ScoreBoard scores={scores} currentPlayer={playerXTurn} waitingForNewRound={waitingForNewRound} draw={draw} />
             <PlayBoard board={board} handleClick={handleClick} />
             <div className={styles.buttonsWrapper}>
                 <Button onClick={resetBoard} background={'#ad7b1b'}>Reset board</Button>
