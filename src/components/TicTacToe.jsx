@@ -44,11 +44,11 @@ export const TicTacToe = () => {
         if (waitingForNewRound) return
         if (playerXTurn) {
             setScores(prevState => {
-                return ({ ...prevState, playerXScore: prevState.playerXScore++ })
+                return ({ ...prevState, playerXScore: prevState.playerXScore + 1 })
             })
         } else {
             setScores(prevState => {
-                return ({ ...prevState, playerOscore: prevState.playerOScore++ })
+                return ({ ...prevState, playerOscore: prevState.playerOScore + 1 })
             })
         }
         setWaitingForNewRound(true)
