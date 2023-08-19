@@ -48,7 +48,7 @@ export const TicTacToe = () => {
             })
         } else {
             setScores(prevState => {
-                return ({ ...prevState, playerOscore: prevState.playerOScore + 1 })
+                return ({ ...prevState, playerOScore: prevState.playerOScore + 1 })
             })
         }
         setWaitingForNewRound(true)
