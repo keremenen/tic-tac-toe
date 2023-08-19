@@ -2,7 +2,7 @@ import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const WINNING_CONDITIONS = [
     [0, 1, 2],
@@ -33,11 +33,13 @@ export const TicTacToe = () => {
             playerOScore: 0
         })
         setWaitingForNewRound(false)
+        setDraw(false)
     }
 
     const resetBoard = () => {
         setBoard(Array(9).fill(null))
         setWaitingForNewRound(false)
+        setDraw(false)
     }
 
     const updateScore = () => {
@@ -80,12 +82,6 @@ export const TicTacToe = () => {
         const boardHasNullElement = board.every(element => element !== null)
         return boardHasNullElement
     }
-
-    useEffect(() => {
-        console.log(board)
-        const element = board.every(element => element !== null)
-        if (element) console.log('jest')
-    }, [board])
 
     return (
         <div>
