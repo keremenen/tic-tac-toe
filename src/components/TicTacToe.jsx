@@ -2,7 +2,7 @@ import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const WINNING_CONDITIONS = [
     [0, 1, 2],
@@ -16,13 +16,34 @@ const WINNING_CONDITIONS = [
 ]
 export const TicTacToe = () => {
 
-    const [board, setBoard] = useState(Array(9).fill(null))
-    const [playerXTurn, setPlayerXTurn] = useState(true)
-    const [waitingForNewRound, setWaitingForNewRound] = useState(false)
-    const [draw, setDraw] = useState(false)
-    const [scores, setScores] = useState({
-        playerXScore: 0,
-        playerOScore: 0
+    const [board, setBoard] = useState(() => {
+        const boardFromLocalStorage = localStorage.getItem('board')
+        if (!boardFromLocalStorage) return Array(9).fill(null)
+        return JSON.parse(boardFromLocalStorage)
+    })
+
+    const [playerXTurn, setPlayerXTurn] = useState(() => {
+        const playerXTurnFromLocalStorage = localStorage.getItem('playerXTurn')
+        if (!playerXTurnFromLocalStorage) return true
+        return JSON.parse(playerXTurnFromLocalStorage)
+    })
+
+    const [waitingForNewRound, setWaitingForNewRound] = useState(() => {
+        const waitingForNewRoundFromLocalStorage = localStorage.getItem('waitingForNewRound')
+        if (!waitingForNewRoundFromLocalStorage) return false
+        return JSON.parse(waitingForNewRoundFromLocalStorage)
+    })
+
+    const [draw, setDraw] = useState(() => {
+        const drawFromLocalStorage = localStorage.getItem('draw')
+        if (!drawFromLocalStorage) return false
+        return JSON.parse(drawFromLocalStorage)
+    })
+
+    const [scores, setScores] = useState(() => {
+        const scoresFromLocalStorage = localStorage.getItem('scores')
+        if (!scoresFromLocalStorage) return { playerXScore: 0, playerOScore: 0 }
+        return JSON.parse(scoresFromLocalStorage)
     })
 
     const resetGame = () => {
@@ -82,6 +103,14 @@ export const TicTacToe = () => {
         const boardHasNullElement = board.every(element => element !== null)
         return boardHasNullElement
     }
+
+    useEffect(() => {
+        localStorage.setItem('board', JSON.stringify(board))
+        localStorage.setItem('playerXTurn', JSON.stringify(playerXTurn))
+        localStorage.setItem('waitingForNewRound', JSON.stringify(waitingForNewRound))
+        localStorage.setItem('draw', JSON.stringify(draw))
+        localStorage.setItem('scores', JSON.stringify(scores))
+    }, [board, playerXTurn, waitingForNewRound, draw, scores])
 
     return (
         <div>
