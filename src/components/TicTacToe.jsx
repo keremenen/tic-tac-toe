@@ -3,7 +3,6 @@ import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
-import { useEffect, useState } from 'react'
 
 const WINNING_CONDITIONS = [
     [0, 1, 2],
@@ -45,7 +44,7 @@ export const TicTacToe = () => {
     }
 
     const updateScore = () => {
-        if (waitingForNewRound) return
+
         if (playerXTurn) {
             updateScores({ ...scores, playerXScore: scores.playerXScore + 1 })
         } else {
@@ -54,14 +53,17 @@ export const TicTacToe = () => {
         updateWaitingForNewBoard(true)
     }
 
+
     const checkIfWin = (board) => {
-        WINNING_CONDITIONS.forEach((item, i) => {
-            const [x, y, z] = item
+        for (const item of WINNING_CONDITIONS) {
+            const [x, y, z] = item;
             if (board[x] && board[x] === board[y] && board[y] === board[z]) {
-                updateScore()
+                updateScore();
+                return true;
             }
-        })
-    }
+        }
+        return false; // Zwróć false, jeśli nie zostanie spełniony żaden warunek zwycięstwa
+    };
 
     const handleClick = (id) => {
         if (waitingForNewRound) return
@@ -73,7 +75,7 @@ export const TicTacToe = () => {
         checkIfWin(updatedBoard)
         updateBoard(updatedBoard)
         updatePlayerXTurn(!playerXTurn)
-        if (handleDraw(updatedBoard)) updateDraw(true)
+        if (!checkIfWin(updatedBoard) && handleDraw(updatedBoard)) updateDraw(true)
     }
 
     const handleDraw = (board) => {
