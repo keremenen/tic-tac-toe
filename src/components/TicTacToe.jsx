@@ -1,3 +1,4 @@
+import { useLocalStorage } from '../hooks/useLocalStorage'
 import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
@@ -16,65 +17,41 @@ const WINNING_CONDITIONS = [
 ]
 export const TicTacToe = () => {
 
-    const [board, setBoard] = useState(() => {
-        const boardFromLocalStorage = localStorage.getItem('board')
-        if (!boardFromLocalStorage) return Array(9).fill(null)
-        return JSON.parse(boardFromLocalStorage)
-    })
+    const { data: board, updateData: updateBoard } = useLocalStorage('board', Array(9).fill(null))
 
-    const [playerXTurn, setPlayerXTurn] = useState(() => {
-        const playerXTurnFromLocalStorage = localStorage.getItem('playerXTurn')
-        if (!playerXTurnFromLocalStorage) return true
-        return JSON.parse(playerXTurnFromLocalStorage)
-    })
+    const { data: playerXTurn, updateData: updatePlayerXTurn } = useLocalStorage('playerXTurn', true)
 
-    const [waitingForNewRound, setWaitingForNewRound] = useState(() => {
-        const waitingForNewRoundFromLocalStorage = localStorage.getItem('waitingForNewRound')
-        if (!waitingForNewRoundFromLocalStorage) return false
-        return JSON.parse(waitingForNewRoundFromLocalStorage)
-    })
+    const { data: waitingForNewRound, updateData: updateWaitingForNewBoard } = useLocalStorage('waitingForNewRound', false)
 
-    const [draw, setDraw] = useState(() => {
-        const drawFromLocalStorage = localStorage.getItem('draw')
-        if (!drawFromLocalStorage) return false
-        return JSON.parse(drawFromLocalStorage)
-    })
+    const { data: draw, updateData: updateDraw } = useLocalStorage('draw', false)
 
-    const [scores, setScores] = useState(() => {
-        const scoresFromLocalStorage = localStorage.getItem('scores')
-        if (!scoresFromLocalStorage) return { playerXScore: 0, playerOScore: 0 }
-        return JSON.parse(scoresFromLocalStorage)
-    })
+    const { data: scores, updateData: updateScores } = useLocalStorage('scores', { playerXScore: 0, playerOScore: 0 })
 
     const resetGame = () => {
-        setPlayerXTurn(true)
-        setBoard(Array(9).fill(null))
-        setScores({
+        updatePlayerXTurn(true)
+        updateBoard(Array(9).fill(null))
+        updateScores({
             playerXScore: 0,
             playerOScore: 0
         })
-        setWaitingForNewRound(false)
-        setDraw(false)
+        updateWaitingForNewBoard(false)
+        updateDraw(false)
     }
 
     const resetBoard = () => {
-        setBoard(Array(9).fill(null))
-        setWaitingForNewRound(false)
-        setDraw(false)
+        updateBoard(Array(9).fill(null))
+        updateWaitingForNewBoard(false)
+        updateDraw(false)
     }
 
     const updateScore = () => {
         if (waitingForNewRound) return
         if (playerXTurn) {
-            setScores(prevState => {
-                return ({ ...prevState, playerXScore: prevState.playerXScore + 1 })
-            })
+            updateScores({ ...scores, playerXScore: scores.playerXScore + 1 })
         } else {
-            setScores(prevState => {
-                return ({ ...prevState, playerOScore: prevState.playerOScore + 1 })
-            })
+            updateScores({ ...scores, playerOScore: scores.playerOScore + 1 })
         }
-        setWaitingForNewRound(true)
+        updateWaitingForNewBoard(true)
     }
 
     const checkIfWin = (board) => {
@@ -94,9 +71,9 @@ export const TicTacToe = () => {
             return item
         })
         checkIfWin(updatedBoard)
-        setBoard(updatedBoard)
-        setPlayerXTurn(prevState => !prevState)
-        if (handleDraw(updatedBoard)) setDraw(true)
+        updateBoard(updatedBoard)
+        updatePlayerXTurn(!playerXTurn)
+        if (handleDraw(updatedBoard)) updateDraw(true)
     }
 
     const handleDraw = (board) => {
@@ -104,13 +81,6 @@ export const TicTacToe = () => {
         return boardHasNullElement
     }
 
-    useEffect(() => {
-        localStorage.setItem('board', JSON.stringify(board))
-        localStorage.setItem('playerXTurn', JSON.stringify(playerXTurn))
-        localStorage.setItem('waitingForNewRound', JSON.stringify(waitingForNewRound))
-        localStorage.setItem('draw', JSON.stringify(draw))
-        localStorage.setItem('scores', JSON.stringify(scores))
-    }, [board, playerXTurn, waitingForNewRound, draw, scores])
 
     return (
         <div>
