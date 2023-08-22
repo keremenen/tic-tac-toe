@@ -1,6 +1,6 @@
 import styles from './ScoreBoard.module.css'
 
-export const ScoreBoard = ({ scores: { playerXScore, playerOScore }, currentPlayer, waitingForNewRound }) => {
+export const ScoreBoard = ({ scores: { playerXScore, playerOScore }, currentPlayer, waitingForNewRound, draw }) => {
 
 
     return (
@@ -14,7 +14,8 @@ export const ScoreBoard = ({ scores: { playerXScore, playerOScore }, currentPlay
                 </div>
             </div>
             <div className={styles.infoMessage}>
-                {waitingForNewRound ? <p>Player {!currentPlayer ? 'X' : 'O'} scored a point. <br /><span>Please reset the round to countinue.</span></p> : <p>Good luck!</p>}
+                {draw && <p>Draw<br /><span>Click "Reset Board" to continue.</span></p>}
+                {waitingForNewRound && <p>Player {!currentPlayer ? 'X' : 'O'} scored a point. <br /><span>Please reset the round to countinue.</span></p>}
             </div>
         </div>
     )

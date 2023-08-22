@@ -1,8 +1,8 @@
+import { useLocalStorage } from '../hooks/useLocalStorage'
 import Button from './Button'
 import PlayBoard from './PlayBoard'
 import { ScoreBoard } from './ScoreBoard'
 import styles from './TicTacToe.module.css'
-import { useState } from 'react'
 
 const WINNING_CONDITIONS = [
     [0, 1, 2],
@@ -14,54 +14,56 @@ const WINNING_CONDITIONS = [
     [0, 4, 8],
     [2, 4, 6]
 ]
-
 export const TicTacToe = () => {
 
-    const [board, setBoard] = useState(Array(9).fill(null))
-    const [playerXTurn, setPlayerXTurn] = useState(true)
-    const [waitingForNewRound, setWaitingForNewRound] = useState(false)
-    const [scores, setScores] = useState({
-        playerXScore: 0,
-        playerOScore: 0
-    })
+    const { data: board, updateData: updateBoard } = useLocalStorage('board', Array(9).fill(null))
+
+    const { data: playerXTurn, updateData: updatePlayerXTurn } = useLocalStorage('playerXTurn', true)
+
+    const { data: waitingForNewRound, updateData: updateWaitingForNewBoard } = useLocalStorage('waitingForNewRound', false)
+
+    const { data: draw, updateData: updateDraw } = useLocalStorage('draw', false)
+
+    const { data: scores, updateData: updateScores } = useLocalStorage('scores', { playerXScore: 0, playerOScore: 0 })
 
     const resetGame = () => {
-        setPlayerXTurn(true)
-        setBoard(Array(9).fill(null))
-        setScores({
+        updatePlayerXTurn(true)
+        updateBoard(Array(9).fill(null))
+        updateScores({
             playerXScore: 0,
             playerOScore: 0
         })
-        setWaitingForNewRound(false)
+        updateWaitingForNewBoard(false)
+        updateDraw(false)
     }
 
     const resetBoard = () => {
-        setBoard(Array(9).fill(null))
-        setWaitingForNewRound(false)
+        updateBoard(Array(9).fill(null))
+        updateWaitingForNewBoard(false)
+        updateDraw(false)
     }
 
     const updateScore = () => {
-        if (waitingForNewRound) return
+
         if (playerXTurn) {
-            setScores(prevState => {
-                return ({ ...prevState, playerXScore: prevState.playerXScore++ })
-            })
+            updateScores({ ...scores, playerXScore: scores.playerXScore + 1 })
         } else {
-            setScores(prevState => {
-                return ({ ...prevState, playerOscore: prevState.playerOScore++ })
-            })
+            updateScores({ ...scores, playerOScore: scores.playerOScore + 1 })
         }
-        setWaitingForNewRound(true)
+        updateWaitingForNewBoard(true)
     }
 
+
     const checkIfWin = (board) => {
-        WINNING_CONDITIONS.forEach((item, i) => {
-            const [x, y, z] = item
+        for (const item of WINNING_CONDITIONS) {
+            const [x, y, z] = item;
             if (board[x] && board[x] === board[y] && board[y] === board[z]) {
-                updateScore()
+                updateScore();
+                return true;
             }
-        })
-    }
+        }
+        return false; // Zwróć false, jeśli nie zostanie spełniony żaden warunek zwycięstwa
+    };
 
     const handleClick = (id) => {
         if (waitingForNewRound) return
@@ -71,13 +73,20 @@ export const TicTacToe = () => {
             return item
         })
         checkIfWin(updatedBoard)
-        setBoard(updatedBoard)
-        setPlayerXTurn(prevState => !prevState)
+        updateBoard(updatedBoard)
+        updatePlayerXTurn(!playerXTurn)
+        if (!checkIfWin(updatedBoard) && handleDraw(updatedBoard)) updateDraw(true)
     }
+
+    const handleDraw = (board) => {
+        const boardHasNullElement = board.every(element => element !== null)
+        return boardHasNullElement
+    }
+
 
     return (
         <div>
-            <ScoreBoard scores={scores} currentPlayer={playerXTurn} waitingForNewRound={waitingForNewRound} />
+            <ScoreBoard scores={scores} currentPlayer={playerXTurn} waitingForNewRound={waitingForNewRound} draw={draw} />
             <PlayBoard board={board} handleClick={handleClick} />
             <div className={styles.buttonsWrapper}>
                 <Button onClick={resetBoard} background={'#ad7b1b'}>Reset board</Button>
